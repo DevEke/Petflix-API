@@ -3,7 +3,7 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
       Models = require('./models.js'),
-      dotenv = require('dot-env');
+      dotenv = require('dot-env'),
       morgan = require('morgan');
 
 const app = express();
