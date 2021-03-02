@@ -3,14 +3,17 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
       Models = require('./models.js'),
+      dotenv = require('dot-env');
       morgan = require('morgan');
 
 const app = express();
 const Movies = Models.Movie;
 
-mongoose.connect("mongodb://localhost:27017/petflix", {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect("mongodb://localhost:27017/Petflix", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Middleware
+dotenv.config();
 app.use(cors());
 app.use(express.static('public'));
 app.use(bodyParser.json());
