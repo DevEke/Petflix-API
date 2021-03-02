@@ -2,8 +2,8 @@ const express = require('express'),
       cors = require('cors'),
       bodyParser = require('body-parser'),
       mongoose = require('mongoose'),
+      dotenv = require('dotenv');
       Models = require('./models.js'),
-      dotenv = require('dot-env'),
       morgan = require('morgan');
 
 const app = express();
