@@ -1,16 +1,16 @@
-const express = require('express'),
-      cors = require('cors'),
-      bodyParser = require('body-parser'),
-      mongoose = require('mongoose'),
-      dotenv = require('dotenv'),
-      Models = require('./models.js'),
-      morgan = require('morgan');
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const Models = require('./models.js');
+const morgan = require('morgan');
 
 const app = express();
 const Movies = Models.Movie;
 
-mongoose.connect("mongodb://localhost:27017/Petflix", {useNewUrlParser: true, useUnifiedTopology: true});
-// mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect("mongodb://localhost:27017/Petflix", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Middleware
 dotenv.config();
