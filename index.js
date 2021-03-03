@@ -42,7 +42,7 @@ app.get('/movies', (req, res) => {
 })
 
 app.get('/movie', (req, res) => {
-   Movies.count().exec(function (err, count) {
+   Movies.countDocuments().exec(function (err, count) {
        let random = Math.floor(Math.random() * count);
        Movies.findOne().skip(random).exec(
            function (err, res) {
