@@ -61,7 +61,7 @@ app.get('/movie', (req, res) => {
 })
 
 app.get('/movies/:genre', (req, res) => {
-    Movies.find({ 'genre': req.params.genre })
+    Movies.find({ 'genres': req.params.genre })
         .then((movie) => {
             res.status(200).json(movie)
         })
