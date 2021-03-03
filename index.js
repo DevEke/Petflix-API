@@ -41,20 +41,39 @@ app.get('/movies', (req, res) => {
         })
 })
 
+// app.get('/movie', (req, res) => {
+//    Movies.countDocuments().exec(function (err, count) {
+//        let random = Math.floor(Math.random() * count);
+//        Movies.findOne().skip(random).exec(
+//            function (err, res) {
+//                if (err) {
+//                    console.error("Error" + err)
+//                } else {
+//                    res.json(res);
+//                }
+//            }
+//        )
+//     })
+// }) 
+
 app.get('/movie', (req, res) => {
-   Movies.countDocuments().exec(function (err, count) {
-       let random = Math.floor(Math.random() * count);
-       Movies.findOne().skip(random).exec(
-           function (err, res) {
-               if (err) {
-                   console.error("Error" + err)
-               } else {
-                   res.json(res);
-               }
-           }
-       )
-    })
-})   
+    Movies.countDocuments()
+        .then((count) => {
+            let random = Math.floor(Math.random() * count);
+            Movies.findOne().skip(random)
+                .then((movie) => {
+                    res.status(200).json(movie)
+                })
+                .catch(error => {
+                    console.error(error);
+                    res.status(500).send("Error" + error)
+                })
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).send("Error" + error)
+        })
+})
 
 app.get('/movies/:title', (req, res) => {
     Movies.findOne({ title: req.params.title})
