@@ -33,6 +33,19 @@ app.get('/', (req, res) => {
     res.status(200).send(message);
 })
 
+app.get('/users', (req, res) => {
+    Users.findOne({ username: req.body.username})
+        .then((user) => {
+            if ( user.password === req.body.password) {
+                return res.status(200).json(user)
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+        })
+})
+
 app.get('/movies', (req, res) => {
     Movies.find()
         .then((movies) => {
