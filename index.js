@@ -10,6 +10,7 @@ const morgan = require('morgan');
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
+const Profile = Models.Profile;
 
 // mongoose.connect("mongodb://localhost:27017/Petflix", {useNewUrlParser: true, useUnifiedTopology: true});
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
@@ -56,7 +57,7 @@ app.get('/movie', (req, res) => {
                     res.status(500).send("Error: " + error)
                 })
         })
-        .catch(error => {
+        .catch((error) => {
             console.error(error);
             res.status(500).send("Error: " + error)
         })

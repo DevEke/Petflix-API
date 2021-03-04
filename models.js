@@ -12,6 +12,11 @@ let movieSchema = mongoose.Schema({
     logoURL: {type: String, required: true},
 });
 
+let profileSchema = mongoose.Schema({
+    name: {type: String, required: true},
+    list: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+})
+
 let userSchema = mongoose.Schema({
     username: {type: String, required: true},
     password: {type: String, required: true},
@@ -19,13 +24,12 @@ let userSchema = mongoose.Schema({
     profiles: [profileSchema]
 });
 
-let profileSchema = mongoose.Schema({
-    name: {type: String, required: true},
-    list: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
-})
+
 
 let Movie = mongoose.model('Movie', movieSchema);
 let User = mongoose.model('User', userSchema);
+let Profile = mongoose.model('Profile', profileSchema);
 
 module.exports.Movie = Movie;
 module.exports.User = User;
+module.exports.Profile = Profile;
