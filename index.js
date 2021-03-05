@@ -115,7 +115,7 @@ app.post('/users', [
                 } else {
                     Users.create({
                         username: req.body.username,
-                        password: hashedPassword,
+                        password: req.body.password,
                         email: req.body.email,
                         profiles: [
                                 {
