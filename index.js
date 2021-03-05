@@ -115,7 +115,17 @@ app.post('/users', [
                     Users.create({
                         username: req.body.username,
                         password: req.body.password,
-                        email: req.body.email
+                        email: req.body.email,
+                        profiles: [
+                                {
+                                    name: 'Rover',
+                                    list: []
+                                },
+                                {
+                                    name: 'pups',
+                                    list: []
+                                }
+                            ]
                     }).then((user) => { res.status(201).json(user)})
                     .catch((error) => {
                         console.error(error);
