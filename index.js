@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 let auth = require('./auth')(app);
+dotenv.config();
 const passport = require('passport');
 require('./passport');
 const mongoose = require('mongoose');
@@ -11,6 +12,7 @@ const Models = require('./models.js');
 const morgan = require('morgan');
 
 const app = express();
+
 const Movies = Models.Movie;
 const Users = Models.User;
 const Profile = Models.Profile;
@@ -19,7 +21,6 @@ const Profile = Models.Profile;
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Middleware
-dotenv.config();
 app.use(cors());
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -47,7 +48,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
         })
 })
 
-app.get('/users/:username/profiles', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/users/:username/profiles', (req, res) => {
     Users.find({ username: req.params.username})
         .then((user) => {
             res.status(300).json(user.profiles);
@@ -107,6 +108,7 @@ app.post('/users', [
     check('password', 'Password is required.').not().isEmpty(),
     check('email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
+        let hashedPassword = Users.hashPassword(req.body.password);
         Users.findOne({ username: req.body.username })
             .then((user) => {
                 if (user) {
@@ -114,7 +116,7 @@ app.post('/users', [
                 } else {
                     Users.create({
                         username: req.body.username,
-                        password: req.body.password,
+                        password: hashedPassword,
                         email: req.body.email,
                         profiles: [
                                 {
