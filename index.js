@@ -2,11 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
-dotenv.config();
 const passport = require('passport');
 require('./passport');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+dotenv.config();
 const Models = require('./models.js');
 const morgan = require('morgan');
 
