@@ -120,7 +120,7 @@ app.post('/users', [
                         email: req.body.email,
                         profiles: [
                                 {
-                                    name: 'Rover',
+                                    name: 'You',
                                     list: []
                                 },
                                 {
