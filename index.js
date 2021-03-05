@@ -107,7 +107,7 @@ app.post('/users', [
     check('password', 'Password is required.').not().isEmpty(),
     check('email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
-        let hashedPassword = Users.hashPassword(req.body.password);
+        // let hashedPassword = Users.hashPassword(req.body.password);
         Users.findOne({ username: req.body.username })
             .then((user) => {
                 if (user) {
