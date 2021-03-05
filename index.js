@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
-let auth = require('./auth')(app);
 dotenv.config();
 const passport = require('passport');
 require('./passport');
@@ -12,7 +11,7 @@ const Models = require('./models.js');
 const morgan = require('morgan');
 
 const app = express();
-
+let auth = require('./auth')(app);
 const Movies = Models.Movie;
 const Users = Models.User;
 const Profile = Models.Profile;
