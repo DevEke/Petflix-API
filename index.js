@@ -2,6 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const Models = require('./models.js');
@@ -33,20 +36,7 @@ app.get('/', (req, res) => {
     res.status(200).send(message);
 })
 
-app.get('/users', (req, res) => {
-    Users.findOne({ username: req.body.username})
-        .then((user) => {
-            if ( user.password === req.body.password) {
-                return res.status(200).json(user)
-            }
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-        })
-})
-
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(200).json(movies);
@@ -57,7 +47,18 @@ app.get('/movies', (req, res) => {
         })
 })
 
-app.get('/movie', (req, res) => {
+app.get('/users/:username/profiles', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Users.find({ username: req.params.username})
+        .then((user) => {
+            res.status(300).json(user.profiles);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error: " + error);
+        })
+})
+
+app.get('/movie', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.countDocuments()
         .then((count) => {
             let random = Math.floor(Math.random() * count);
@@ -76,7 +77,7 @@ app.get('/movie', (req, res) => {
         })
 })
 
-app.get('/movies/:genre', (req, res) => {
+app.get('/movies/:genre', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.find({ 'genres': req.params.genre })
         .then((movie) => {
             res.status(200).json(movie)
@@ -87,7 +88,7 @@ app.get('/movies/:genre', (req, res) => {
         })
 })
 
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title', passport.authenticate('jwt', { session: false }), (req, res) => {
     Movies.findOne({ title: req.params.title})
         .then((movie) => {
             res.status(200).json(movie);
@@ -131,7 +132,7 @@ app.post('/users', [
         }
 });
 
-app.post('/users/username/:profile/list/:movieId', (req, res) => {
+app.post('/users/username/:profile/list/:movieId', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndUpdate({ profile: req.params.profile }, { $push: { list: req.params.movieId }}, { new: true })
         .then((updatedList) => {
             res.status(201).json(updatedList);
@@ -144,7 +145,7 @@ app.post('/users/username/:profile/list/:movieId', (req, res) => {
 
 //PUT Requests
 
-app.put('/users/:username/update-username', [ 
+app.put('/users/:username/update-username', passport.authenticate('jwt', { session: false }), [ 
     check('username','Username must be at least 5 characters.').isLength({min: 5}),
     check('username', 'Username must only contain letters and numbers.').isAlphanumeric()
     ], (req, res) => {
@@ -162,7 +163,7 @@ app.put('/users/:username/update-username', [
         }
 });
 
-app.put('/users/:username/update-password', [ 
+app.put('/users/:username/update-password', passport.authenticate('jwt', { session: false }), [ 
     check('Password', 'Password is required.').not().isEmpty()
     ], (req, res) => {
         Users.findByIdAndUpdate({ username: req.params.username}, { $set: { password: req.body.password }}, { new: true })
@@ -179,7 +180,7 @@ app.put('/users/:username/update-password', [
         }
 });
 
-app.put('/users/:username/update-email', [ 
+app.put('/users/:username/update-email', passport.authenticate('jwt', { session: false }), [ 
     check('Email', 'Email does not appear to be valid.').isEmail()
     ], (req, res) => {
         Users.findByIdAndUpdate({ username: req.params.username}, { $set: { email: req.body.email }}, { new: true })
@@ -198,7 +199,7 @@ app.put('/users/:username/update-email', [
 
 //DELETE Requests
 
-app.delete('/users/username/:profile/list/movieId', (req, res) => {
+app.delete('/users/username/:profile/list/movieId', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndRemove({ profile: req.params.profile }, { $pull: { list: req.params.username }}, { new: true })
         .then((updatedList) => {
             res.status(200).json(updatedList);
@@ -209,7 +210,7 @@ app.delete('/users/username/:profile/list/movieId', (req, res) => {
         });
 });
 
-app.delete('/users/:username', (req, res) => {
+app.delete('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
     Users.findOneAndRemove({ username: req.params.username })
         .then((user) => {
             if (!user) {
