@@ -195,6 +195,18 @@ app.post('/users/:username/profiles/:name/list/:movieId', passport.authenticate(
 
 //--------------------PUT Requests-----------------------//
 
+// UPDATES A PROFILE NAME
+app.put('users/:username/profiles/:name', passport.authenticate('jwt', { session: false }), (req, res) => {
+    Profiles.findByIdAndUpdate({ name: req.params.name}, { $set: {name: req.body.name}}, {new: true})
+        .then((updatedProfile) => {
+            res.status(201).json(updatedProfile);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        });
+});
+
 // UPDATES A USERNAME 
 app.put('/users/:username/username', passport.authenticate('jwt', { session: false }), [ 
     check('username','Username must be at least 5 characters.').isLength({min: 5}),
