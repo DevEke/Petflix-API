@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 })
 
 // GET A LIST OF ALL MOVIES
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', (req, res) => {
     Movies.find()
         .then((movies) => {
             res.status(200).json(movies);
@@ -44,7 +44,7 @@ app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) 
 })
 
 // GET A SINGLE RANDOM MOVIE
-app.get('/movie', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movie', (req, res) => {
     Movies.countDocuments()
         .then((count) => {
             let random = Math.floor(Math.random() * count);
