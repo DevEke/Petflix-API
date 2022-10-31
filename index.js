@@ -1,27 +1,51 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const session = require('express-session');
+const passport = require('passport');
 const dotenv = require('dotenv');
-dotenv.config();
-const Models = require('./models.js');
 const morgan = require('morgan');
-
+dotenv.config();
 const app = express();
-const Movies = Models.Movie;;
 
 // mongoose.connect("mongodb://localhost:27017/Petflix", {useNewUrlParser: true, useUnifiedTopology: true});
+// Connection 
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
+
 //Middleware
+app.use(morgan(':method :url - :referrer'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(morgan('common'));
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Error');
-})
+app.use(session({
+    secret: process.env.USER_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: true}
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
+  
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
+
+
+
+require('./routes/UserRoutes/UserAuth/userSignIn.jsx')(app);
+require('./routes/UserRoutes/createAccount.jsx')(app);
+require('./routes/UserRoutes/forgotPassword.jsx')(app);
+require('./routes/UserRoutes/resetPassword.jsx')(app);
+require('./routes/MovieRoutes/movieroutes.jsx')(app);
+require('./routes/UserRoutes/UserAuth/userAuth.jsx');
+
+
+
+
 
 //-------------------GET Requests----------------------//
 
@@ -30,38 +54,8 @@ app.get('/', (req, res) => {
     let message = "Petflix Home";
     res.status(200).send(message);
 })
+/// Routes
 
-// GET A LIST OF ALL MOVIES
-app.get('/movies', (req, res) => {
-    Movies.find()
-        .then((movies) => {
-            res.status(200).json(movies);
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error);
-        })
-})
-
-// GET A SINGLE RANDOM MOVIE
-app.get('/movie', (req, res) => {
-    Movies.countDocuments()
-        .then((count) => {
-            let random = Math.floor(Math.random() * count);
-            Movies.findOne().skip(random)
-                .then((movie) => {
-                    res.status(200).json(movie)
-                })
-                .catch(error => {
-                    console.error(error);
-                    res.status(500).send("Error: " + error)
-                })
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error: " + error)
-        })
-})
 
 //---------------Listen for Requests--------------//
 
