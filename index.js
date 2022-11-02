@@ -35,7 +35,7 @@ passport.deserializeUser((user, done) => {
 });
 
 
-
+require('./routes/UserRoutes/getUser.jsx')(app);
 require('./routes/UserRoutes/UserAuth/userSignIn.jsx')(app);
 require('./routes/UserRoutes/createAccount.jsx')(app);
 require('./routes/UserRoutes/forgotPassword.jsx')(app);
