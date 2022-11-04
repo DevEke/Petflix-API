@@ -42,7 +42,7 @@ module.exports = (router) => {
                 if (err) {
                     return console.log(err)
                 }
-                res.status(200).send({message: "Mail Send", message_id: info.messageId, user: user})
+                res.status(200).send({message: "Mail Send", message_id: info.messageId})
             });
         })
         .catch(err => { res.status(500).send({message: 'Error sending email'})})
@@ -51,7 +51,7 @@ module.exports = (router) => {
     router.put('/reset-forgot-password', (req, res) => {
         Users.findOne({email: req.body.email})
         .then(user => {
-            if (req.body.verification === user.verification) {
+            if (req.body.verification === user.resetCode) {
                 const salt = crypto.randomBytes(16).toString('hex');
                 const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
                 Users.findOneAndUpdate({ _id: user._id}, {
