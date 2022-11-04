@@ -13,8 +13,8 @@ const transporter = nodemailer.createTransport({
 })
 
 const randomNumber = () => {
-    var min = 100000000000;
-    var max = 999999999999;
+    var min = 100000;
+    var max = 999999;
     return Math.floor(Math
       .random() * (max - min + 1)) + min;
   }
@@ -35,6 +35,7 @@ module.exports = (router) => {
                 subject: 'Password Reset Verification Code',
                 text: 'Here is the verification code to reset your password',
                 html: `<div>
+                        <h5>Here is your verification code</h5>
                         <h1>${verificationCode}</h1>
                         </div>`
             }

@@ -6,7 +6,7 @@ const passport = require('passport');
 
 module.exports = (router) => {
     
-    router.post('/:userID/:accountID/add-favorites/:movieID', passport.authenticate('jwt'), (req, res) => {
+    router.post('/:userID/:accountID/add-favorites/:movieID', passport.authenticate('jwt', {session: false}), (req, res) => {
         Movies.findById({_id: req.params.movieID})
             .then((movie) => {
                 Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID }, 
@@ -26,7 +26,7 @@ module.exports = (router) => {
         
     });
 
-    router.delete('/:userID/:accountID/remove-favorite/:movieID', passport.authenticate('jwt'), (req, res) => {
+    router.delete('/:userID/:accountID/remove-favorite/:movieID', passport.authenticate('jwt', {session: false}), (req, res) => {
         Movies.findById({ _id: req.params.movieID})
             .then((movie) => {
                 Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID}, 
