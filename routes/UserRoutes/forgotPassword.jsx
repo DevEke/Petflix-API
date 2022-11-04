@@ -42,10 +42,10 @@ module.exports = (router) => {
                 if (err) {
                     return console.log(err)
                 }
-                res.status(200).send({message: "Mail Send", message_id: info.messageId})
+                res.status(200).send({message: "If an account exists for you, an email will be sent to you with a verification code. Enter it below to reset your password.", status: 'success', message_id: info.messageId})
             });
         })
-        .catch(err => { res.status(500).send({message: 'Error sending email'})})
+        .catch(err => { res.status(500).send({message: 'Error sending email', status: 'fail', error: err})})
     })
 
     router.put('/reset-forgot-password', (req, res) => {
@@ -62,19 +62,21 @@ module.exports = (router) => {
                     }
                 }, { new: true})
                 .then(user => {
-                    res.status(200).json(user)
+                    res.status(200).send({
+                        message: 'Password was successfully reset. Please login to your account.',
+                        status: 'success'
+                    })
                 })
                 .catch(err => {
-                    console.error(err);
-                    res.status(500).send({error: err})
+                    res.status(500).send({message: 'There was a problem finding your account.', status:'fail', error: err})
                 })
             } else {
-                res.status(500).send({message: 'Verification Code Incorrect.'})
+                res.status(500).send({message: 'Your verification code is incorrect. Please try again.', status: 'fail'})
             }
         })
         .catch(err=> {
             console.error(err);
-            res.status(500).send({error: err})
+            res.status(500).send({message: 'There was a problem finding a user with that email address', status: 'fail', error: err})
         })
     })
 

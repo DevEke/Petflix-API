@@ -15,15 +15,15 @@ module.exports = (router) => {
     router.post('/sign-in', (req, res) => {
         passport.authenticate('local', (error, user, info) => {
             if (error || !user) {
-                return res.status(400).json({
+                return res.status(400).send({
                     message: 'Your credentials are incorrect.',
-                    user: user
+                    status: 'fail'
                 })
             }
             req.login(user, err => {
                 if (err) return res.send(err)
                 let token = generateJWTToken(user.toJSON());
-                return res.json({user, token})
+                return res.send({message: 'You were successfully logged in.', status: 'success', user: user, token: token})
             })
         })(req, res)
     })

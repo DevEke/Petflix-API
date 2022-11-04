@@ -14,11 +14,11 @@ module.exports = (router) => {
             }
         }, { new: true})
         .then(user => {
-            res.status(200).json(user)
+            res.status(200).send({message: 'Your password was reset successfully.', status: 'success'})
         })
         .catch(err => {
             console.error(err);
-            res.status(500).send({error: err})
+            res.status(500).send({message: 'There was a problem resetting your password.', status: 'fail', error: err})
         })
     })
 }

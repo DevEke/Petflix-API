@@ -30,19 +30,16 @@ module.exports = (router) => {
                     accounts: initArray
                 })
                 .then(user => {
-                    res.status(201).json(user)
-                    console.log('User created Successfully')
+                    res.status(201).send({message: 'Account created successfully.', status: 'success', user: user})
                 })
                 .catch(error => {
-                    res.status(500).json(error)
-                    console.log('Problem creating user')
+                    res.status(500).send({message: 'There was a problem creating your account.', status: 'fail', error: error})
                 })
             }
             
         })
         .catch(err => {
-            res.status(500).json(err);
-            console.log('There was an issue finding the users') 
+            res.status(500).send({message: 'There was a problem finding the users.', status: 'fail', error: err});
         })
     })
 
