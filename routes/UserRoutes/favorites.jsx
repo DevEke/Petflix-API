@@ -11,7 +11,7 @@ module.exports = (router) => {
             .then((movie) => {
                 Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID }, 
                 { $push: {
-                    'accounts.$.favorites': movie
+                    'accounts.$.favorites': req.params.movieID
                 }}, {new: true})
                 .then((updatedList) => {
                     res.status(201).send({message: 'Movie was added to your favorites.', status: 'success'});
@@ -31,7 +31,7 @@ module.exports = (router) => {
             .then((movie) => {
                 Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID}, 
                 { $pull: { 
-                    'accounts.$.favorites': {_id: movie._id}}
+                    'accounts.$.favorites': req.params.movieID}
                 }, {new: true})
                 .then((updatedList) => {
                     res.status(201).send({message: 'Movie was removed from your favorites.', status: 'success'});
