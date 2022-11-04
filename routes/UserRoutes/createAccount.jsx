@@ -24,7 +24,7 @@ module.exports = (router) => {
                 initArray = [firstAccount, pupsAccount]
                 Users.create({
                     email: req.body.email,
-                    joinedDate: new Date().toString(),
+                    joinedDate: new Date().toISOString(),
                     hash: hash,
                     salt: salt,
                     accounts: initArray
