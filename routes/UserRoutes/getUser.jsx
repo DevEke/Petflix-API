@@ -3,7 +3,9 @@ const passport = require('passport');
 
 module.exports = (router) => {
 
-    router.get('/user/:id', passport.authenticate('jwt'), (req, res) => {
+    router.get('/user/:id', 
+    // passport.authenticate('jwt'), 
+    (req, res) => {
             Users.findOne({ _id: req.params.id })
             .then(auth=> {
                 res.status(200).send({message: 'User successfully retrieved.', status: 'success', auth: auth})
