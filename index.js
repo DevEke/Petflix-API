@@ -18,21 +18,21 @@ app.use(morgan(':method :url - :referrer'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-// app.use(session({
-//     secret: process.env.USER_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {secure: true}
-// }))
-// app.use(passport.initialize());
-// app.use(passport.session());
-// passport.serializeUser((user, done) => {
-//     done(null, user);
-// });
+app.use(session({
+    secret: process.env.USER_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: true}
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser((user, done) => {
+    done(null, user);
+});
   
-// passport.deserializeUser((user, done) => {
-//     done(null, user);
-// });
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
 
 
 require('./routes/UserRoutes/getUser.jsx')(app);
