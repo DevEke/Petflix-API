@@ -3,7 +3,7 @@ let Movies = require('../../models/Movie.jsx').Movie;
 
 module.exports = (router) => {
     // GETS ALL MOVIES
-    router.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
+    router.get('/movies', passport.authenticate('jwt'), (req, res) => {
         Movies.find()
             .then((movies) => {
                 res.status(200).send({message: 'Movies retrieved successfully', status: 'success', movies: movies});
@@ -15,7 +15,7 @@ module.exports = (router) => {
     })
 
     // GETS A SINGLE RANDOM MOVIE
-    router.get('/movie', passport.authenticate('jwt', {session: false}), (req, res) => {
+    router.get('/movie', passport.authenticate('jwt'), (req, res) => {
         Movies.countDocuments()
             .then((count) => {
                 let random = Math.floor(Math.random() * count);
