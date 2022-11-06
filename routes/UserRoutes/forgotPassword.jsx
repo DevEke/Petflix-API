@@ -24,7 +24,8 @@ const randomNumber = () => {
 module.exports = (router) => {
     router.put('/forgot-password',
     body('email').isEmail().withMessage('Please enter a valid email address.'),
-     (req, res) => { 
+     (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
@@ -58,10 +59,17 @@ module.exports = (router) => {
 
     router.put('/reset-forgot-password',
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
+    body('confirm').custom((value, {req}) => {
+        if (value !== req.body.password) {
+            throw new Error('Make sure your confirmation matches your password.')
+        }
+        return true;
+    }),
      (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+             return res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
         }
         Users.findOne({email: req.body.email})
         .then(user => {
@@ -76,21 +84,21 @@ module.exports = (router) => {
                     }
                 }, { new: true})
                 .then(user => {
-                    res.status(200).send({
+                     return res.status(200).send({
                         message: 'Password was successfully reset. Please login to your account.',
                         status: 'success'
                     })
                 })
                 .catch(err => {
-                    res.status(500).send({message: 'There was a problem finding your account.', status:'fail', error: err})
+                     return res.status(500).send({message: 'There was a problem finding your account.', status:'fail', error: err})
                 })
             } else {
-                res.status(500).send({message: 'Your verification code is incorrect. Please try again.', status: 'fail'})
+                 return res.status(500).send({message: 'Your verification code is incorrect. Please try again.', status: 'fail'})
             }
         })
         .catch(err=> {
             console.error(err);
-            res.status(500).send({message: 'There was a problem finding a user with that email address', status: 'fail', error: err})
+             return res.status(500).send({message: 'There was a problem finding a user with that email address', status: 'fail', error: err})
         })
     })
 
