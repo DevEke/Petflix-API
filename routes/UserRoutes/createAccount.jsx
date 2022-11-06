@@ -10,6 +10,7 @@ module.exports = (router) => {
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
     body('name').not().isEmpty().withMessage('Name cannot be empty.'),
      (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
