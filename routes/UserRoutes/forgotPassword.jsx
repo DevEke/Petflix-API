@@ -59,7 +59,7 @@ module.exports = (router) => {
 
     router.put('/reset-forgot-password',
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
-    body('confirm').custom((value, {req}) => value === req.body.password).withMessage('Password must be at least 5 characters long.'),
+    body('confirm').custom((value, {req}) => value === req.body.password).withMessage('Make sure your confirmation matches your password.'),
      (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         const errors = validationResult(req);
