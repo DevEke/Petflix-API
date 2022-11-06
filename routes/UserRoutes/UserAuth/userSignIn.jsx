@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 require('./userAuth.jsx');
+const { body, validationResult } = require('express-validator');
 
 
 let generateJWTToken = (user) => {
@@ -12,8 +13,15 @@ let generateJWTToken = (user) => {
 }
 
 module.exports = (router) => {
-    router.post('/sign-in', (req, res) => {
+    router.post('/sign-in',
+    body('email').isEmail().withMessage('Please enter a valid email address.'),
+    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
+     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+             return res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+        }
         passport.authenticate('local', (error, user, info) => {
             if (error || !user) {
                 return res.status(400).send({
