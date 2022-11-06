@@ -13,7 +13,7 @@ module.exports = (router) => {
             throw new Error('Make sure your confirmation matches your password.')
         }
         return true;
-    }).withMessage('Make sure your confirmation matches your password.'),
+    }),
     body('name').not().isEmpty().withMessage('Name cannot be empty.'),
      (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
