@@ -8,6 +8,12 @@ module.exports = (router) => {
     router.post('/register-account',
     body('email').isEmail().withMessage('Please enter a valid email address.'),
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
+    body('confirm').custom((value, {req}) => {
+        if (value !== req.body.password) {
+            throw new Error('Make sure your confirmation matches your password.')
+        }
+        return true;
+    }).withMessage('Make sure your confirmation matches your password.'),
     body('name').not().isEmpty().withMessage('Name cannot be empty.'),
      (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
