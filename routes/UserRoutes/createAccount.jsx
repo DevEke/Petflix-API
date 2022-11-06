@@ -1,10 +1,19 @@
 
 let Users = require('../../models/User.jsx').User;
 let crypto = require('crypto');
+const { body, validationResult } = require('express-validator');
 
 module.exports = (router) => {
     // Create an Account
-    router.post('/register-account', (req, res) => {
+    router.post('/register-account',
+    body('email').isEmail().withMessage('Please enter a valid email address.'),
+    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
+    body('name').not().isEmpty().withMessage('Name cannot be empty.'),
+     (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+        }
         const salt = crypto.randomBytes(16).toString('hex');
         const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
         Users.findOne({email: req.body.email})

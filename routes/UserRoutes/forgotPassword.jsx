@@ -1,6 +1,7 @@
 var nodemailer = require('nodemailer');
 let Users = require('../../models/User.jsx').User;
 let crypto = require('crypto');
+const { body, validationResult } = require('express-validator');
 
 const transporter = nodemailer.createTransport({
     port: 465,
@@ -21,7 +22,13 @@ const randomNumber = () => {
 
 
 module.exports = (router) => {
-    router.put('/forgot-password', (req, res) => { 
+    router.put('/forgot-password',
+    body('email').isEmail().withMessage('Please enter a valid email address.'),
+     (req, res) => { 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+        }
         let verificationCode = randomNumber();  
         Users.findOneAndUpdate({email: req.body.email}, {
             $set: {
@@ -49,7 +56,13 @@ module.exports = (router) => {
         .catch(err => { res.status(500).send({message: 'Error sending email', status: 'fail', error: err})})
     })
 
-    router.put('/reset-forgot-password', (req, res) => {
+    router.put('/reset-forgot-password',
+    body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
+     (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+        }
         Users.findOne({email: req.body.email})
         .then(user => {
             if (req.body.verification === user.resetCode) {
