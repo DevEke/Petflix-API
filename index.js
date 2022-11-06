@@ -40,6 +40,7 @@ require('./routes/UserRoutes/UserAuth/userSignIn.jsx')(app);
 require('./routes/UserRoutes/createAccount.jsx')(app);
 require('./routes/UserRoutes/forgotPassword.jsx')(app);
 require('./routes/UserRoutes/resetPassword.jsx')(app);
+require('./routes/UserRoutes/subAccounts.jsx')(app);
 require('./routes/UserRoutes/deleteAccount.jsx')(app);
 require('./routes/MovieRoutes/movieroutes.jsx')(app);
 require('./routes/UserRoutes/favorites.jsx')(app);
