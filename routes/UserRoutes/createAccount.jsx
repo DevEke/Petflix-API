@@ -13,14 +13,14 @@ module.exports = (router) => {
         res.header("Access-Control-Allow-Origin", "*");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
+            return res.status(400).send({message: 'Please check your credentials.', status: 'fail', errors: errors})
         }
         const salt = crypto.randomBytes(16).toString('hex');
         const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
         Users.findOne({email: req.body.email})
         .then((user) => {
             if (user) {
-                res.status(400).send('Email already exists')
+               return res.status(400).send('Email already exists')
             } else {
                 let initArray = [];
                 let firstAccount = {};
@@ -40,16 +40,16 @@ module.exports = (router) => {
                     accounts: initArray
                 })
                 .then(user => {
-                    res.status(201).send({message: 'Account created successfully.', status: 'success', user: user})
+                   return res.status(201).send({message: 'Account created successfully.', status: 'success', user: user})
                 })
                 .catch(error => {
-                    res.status(500).send({message: 'There was a problem creating your account.', status: 'fail', error: error})
+                     return res.status(500).send({message: 'There was a problem creating your account.', status: 'fail', error: error})
                 })
             }
             
         })
         .catch(err => {
-            res.status(500).send({message: 'There was a problem finding the users.', status: 'fail', error: err});
+             return res.status(500).send({message: 'There was a problem finding the users.', status: 'fail', error: err});
         })
     })
 
