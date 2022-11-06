@@ -73,7 +73,7 @@ module.exports = (router) => {
         }
         Users.findOne({email: req.body.email})
         .then(user => {
-            if (req.body.verification === user.resetCode) {
+            if (req.body.code === user.resetCode) {
                 const salt = crypto.randomBytes(16).toString('hex');
                 const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
                 Users.findOneAndUpdate({ _id: user._id}, {
