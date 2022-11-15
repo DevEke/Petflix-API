@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 
 module.exports = (router) => {
     // Create an Account
-    router.post('/register-account',
+    router.post('/users',
     body('email').isEmail().withMessage('Please enter a valid email address.'),
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
     body('confirm').custom((value, {req}) => {

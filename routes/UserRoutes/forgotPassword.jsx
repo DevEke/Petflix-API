@@ -20,6 +20,8 @@ const randomNumber = () => {
       .random() * (max - min + 1)) + min;
   }
 
+  
+  // SENDS A VERIFICATION CODE TO THE EMAIL ON FILE FOR PASSWORD RESET
 
 module.exports = (router) => {
     router.put('/forgot-password',

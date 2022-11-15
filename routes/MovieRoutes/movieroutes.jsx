@@ -17,7 +17,8 @@ module.exports = (router) => {
             })
     })
 
-    router.get('/movie/:movieID',
+    // GET A SINGLE MOVIE BY ID
+    router.get('/movies/:movieID',
     // passport.authenticate('jwt'),
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
@@ -31,7 +32,7 @@ module.exports = (router) => {
     })
 
     // GETS A SINGLE RANDOM MOVIE
-    router.get('/movie', 
+    router.get('/movies/random-movie', 
     // passport.authenticate('jwt'), 
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");

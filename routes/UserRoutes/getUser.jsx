@@ -3,11 +3,11 @@ const passport = require('passport');
 
 module.exports = (router) => {
 
-    router.get('/user/:id', 
+    router.get('/users/:userID', 
     // passport.authenticate('jwt'), 
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
-            Users.findOne({ _id: req.params.id })
+            Users.findOne({ _id: req.params.userID })
             .then(auth=> {
                 return res.status(200).send({message: 'User successfully retrieved.', status: 'success', auth: auth})
             })

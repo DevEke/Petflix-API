@@ -6,13 +6,13 @@ const passport = require('passport');
 
 module.exports = (router) => {
     
-    router.post('/:userID/:accountID/add-favorites/:movieID',
+    router.post('/users/:userID/profiles/:profileID/favorites/:movieID',
     //  passport.authenticate('jwt'),
       (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         Movies.findById({_id: req.params.movieID})
             .then((movie) => {
-                Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID }, 
+                Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.profileID }, 
                 { $push: {
                     'accounts.$.favorites': req.params.movieID
                 }}, {new: true})
@@ -29,13 +29,13 @@ module.exports = (router) => {
         
     });
 
-    router.delete('/:userID/:accountID/remove-favorite/:movieID', 
+    router.delete('/users/:userID/profiles/:profileID/favorites/:movieID', 
     // passport.authenticate('jwt'), 
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         Movies.findById({ _id: req.params.movieID})
             .then((movie) => {
-                Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.accountID}, 
+                Users.findOneAndUpdate({ _id: req.params.userID, 'accounts._id': req.params.profileID}, 
                 { $pull: { 
                     'accounts.$.favorites': req.params.movieID}
                 }, {new: true})

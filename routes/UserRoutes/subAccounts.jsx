@@ -3,7 +3,8 @@ let Users = require('../../models/User.jsx').User;
 const { body, validationResult } = require('express-validator');
 
 module.exports = (router) => {
-    router.post('/:userID/new-account',
+    // ADDS A NEW PROFILE TO THE ACCOUNT
+    router.post('/users/:userID/profiles',
     body('name').not().isEmpty().withMessage('Name cannot be empty.'),
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
@@ -28,7 +29,7 @@ module.exports = (router) => {
         })
     })
 
-    router.delete('/:userID/remove-account/:accountID',
+    router.delete('/users/:userID/profiles/:profileID',
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
         Users.findOneAndUpdate({_id: req.params.userID}, {

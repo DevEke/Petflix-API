@@ -5,7 +5,7 @@ const { body, validationResult } = require('express-validator');
 
 module.exports = (router) => {
 
-    router.put('/reset-password/:id', 
+    router.put('/users/:userID/reset-password', 
     // passport.authenticate('jwt'),
     body('password').isLength({min: 5}).withMessage('Password must be at least 5 characterss long.'),
     body('confirm').custom((value, {req}) => {
@@ -22,7 +22,7 @@ module.exports = (router) => {
         }
         const salt = crypto.randomBytes(16).toString('hex');
         const hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
-        Users.findOneAndUpdate({ _id: req.params.id}, {
+        Users.findOneAndUpdate({ _id: req.params.userID}, {
             $set: {
                 hash: hash,
                 salt: salt
