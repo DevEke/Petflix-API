@@ -32,7 +32,7 @@ module.exports = (router) => {
     })
 
     // GETS A SINGLE RANDOM MOVIE
-    router.get('/movies/random-movie', 
+    router.get('/random-movie', 
     // passport.authenticate('jwt'), 
     (req, res) => {
         res.header("Access-Control-Allow-Origin", "*");
