@@ -31,6 +31,20 @@ module.exports = (router) => {
         })
     })
 
+    // GET ALL MOVIES BY THE GENRE
+    router.get('/movies/genres/:genre',
+    // passport.authenticate('jwt'),
+    (req, res) => {
+        res.header("Access-Control-Allow-Origin", "*");
+        Movies.find({genres: {$elemMatch: {$eq: req.params.genre}}})
+        .then((movies) => {
+            res.status(200).send({message: 'Movies successfully retrieved', status: 'success', movies: movies})
+        })
+        .catch((err) => {
+            return res.status(500).send({message: 'There was a problem finding the movies', status: 'fail', error: err})
+        })
+    })
+
     // GETS A SINGLE RANDOM MOVIE
     router.get('/random-movie', 
     // passport.authenticate('jwt'), 
