@@ -26,7 +26,7 @@ module.exports = (router) => {
         Users.findOne({email: req.body.email})
         .then((user) => {
             if (user) {
-               return res.status(400).send({message: 'Email already exists', status: 'success'})
+               return res.status(400).send({message: 'Email already exists', status: 'fail'})
             } else {
                 let initArray = [];
                 let firstAccount = {};
