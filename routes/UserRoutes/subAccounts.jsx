@@ -35,7 +35,7 @@ module.exports = (router) => {
         res.header("Access-Control-Allow-Origin", "*");
         Users.findOneAndUpdate({_id: req.params.userID}, {
             $pull: {
-                accounts: {_id: req.params.accountID }
+                accounts: {_id: req.params.profileID }
             }
         }, {new: true})
         .then((user) => {
