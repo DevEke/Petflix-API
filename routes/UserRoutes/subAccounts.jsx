@@ -23,10 +23,10 @@ module.exports = (router) => {
             }
         }, {new: true})
         .then((user) => {
-            return res.status(201).send({message: 'New account was created favorites.', status: 'success'});
+            return res.status(201).send({message: 'New profile was added to your account.', status: 'success'});
         })
         .catch((err) => {
-            return res.status(500).send({message: 'There was a problem adding the account.', status: 'fail', error: err})
+            return res.status(500).send({message: 'There was a problem adding the profile.', status: 'fail', error: err})
         })
     })
 
@@ -39,10 +39,10 @@ module.exports = (router) => {
             }
         }, {new: true})
         .then((user) => {
-            return res.status(201).send({message: 'Account successfully removed.', status: 'success'});
+            return res.status(201).send({message: 'Profile successfully removed.', status: 'success'});
         })
         .catch((err) => {
-            return res.status(500).send({message: 'There was a problem removing the account.', status: 'fail', error: err})
+            return res.status(500).send({message: 'There was a problem removing the profile.', status: 'fail', error: err})
         })
     })
 }
