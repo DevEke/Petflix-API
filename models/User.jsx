@@ -9,7 +9,8 @@ let userSchema = mongoose.Schema({
     accounts: [{
         name: {type: String},
         type: {type: String},
-        favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
+        favorites: [{type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}],
+        permanent: {type: Boolean, required: true}
     }],
     joinedDate: {type: Date},
     resetCode: {type: String}

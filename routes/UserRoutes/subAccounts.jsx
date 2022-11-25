@@ -16,6 +16,7 @@ module.exports = (router) => {
         newAccount.name = req.body.name;
         newAccount.type = req.body.type;
         newAccount.favorites = [];
+        newAccount.permanent = false;
         Users.findOneAndUpdate({ _id: req.params.userID}, {
             $push: {
                 accounts: newAccount

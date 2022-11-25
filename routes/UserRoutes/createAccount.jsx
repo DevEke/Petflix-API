@@ -34,9 +34,11 @@ module.exports = (router) => {
                 firstAccount.name = req.body.name;
                 firstAccount.type = 'adult';
                 firstAccount.favorites = [];
+                firstAccount.permanent = true;
                 pupsAccount.name = 'Pups';
                 pupsAccount.type = 'pups';
                 pupsAccount.favorites = [];
+                pupsAccount.permanent = true;
                 initArray = [firstAccount, pupsAccount]
                 Users.create({
                     email: req.body.email,
