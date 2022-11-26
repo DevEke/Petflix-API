@@ -45,7 +45,7 @@ module.exports = (router) => {
                     joinedDate: new Date().toISOString(),
                     hash: hash,
                     salt: salt,
-                    accounts: initArray
+                    profiles: initArray
                 })
                 .then(user => {
                    return res.status(201).send({message: 'Account created successfully.', status: 'success', user: user})
